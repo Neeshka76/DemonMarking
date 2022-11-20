@@ -20,7 +20,6 @@ namespace DemonMarking
         private Creature creaturePossessed;
         public override IEnumerator OnLoadCoroutine()
         {
-            decalMarkings = JsonConvert.DeserializeObject<List<DemonMarkingDecals>>(File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "Mods", "DemonMarking", "decals.json")));
             EventManager.onPossess += EventManager_onPossess;
             return base.OnLoadCoroutine();
         }
@@ -29,9 +28,16 @@ namespace DemonMarking
         {
             if (eventTime == EventTime.OnEnd)
             {
+
+                if (!creature.data.id.Contains("PlayerDefault"))
+                {
+                    Debug.Log($"DemonMarking : Not a PlayerDefault creature, cannot use this mod");
+                    return;
+                }
+                string gender = creature.data.id.Substring("PlayerDefault".Length);
+                decalMarkings = JsonConvert.DeserializeObject<List<DemonMarkingDecals>>(File.ReadAllText(Path.Combine(Application.streamingAssetsPath, "Mods", "DemonMarking", "decals_" + gender + ".json")));
                 creaturePossessed = creature;
                 creaturePossessed.OnDespawnEvent += Creature_OnDespawnEvent;
-
                 foreach (DemonMarkingDecals markingDecals in decalMarkings)
                 {
                     if (!string.IsNullOrEmpty(markingDecals.decalID))
@@ -121,7 +127,10 @@ namespace DemonMarking
                 foreach (RagdollPart ragdollPart in Player.local.creature.ragdoll.parts)
                 {
                     if (ragdollPart.name == partName)
+                    {
                         part = ragdollPart;
+                        break;
+                    }
                 }
             }
             return part;
