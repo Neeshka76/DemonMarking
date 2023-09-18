@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33723.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemonMarking", "DemonMarking.csproj", "{AA4B07B4-F787-4380-AEA4-D19CEAA24C28}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AA4B07B4-F787-4380-AEA4-D19CEAA24C28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA4B07B4-F787-4380-AEA4-D19CEAA24C28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA4B07B4-F787-4380-AEA4-D19CEAA24C28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA4B07B4-F787-4380-AEA4-D19CEAA24C28}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A6336302-8734-4CD5-862E-449026039E51}
+	EndGlobalSection
+EndGlobal
