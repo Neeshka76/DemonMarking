@@ -1281,14 +1281,14 @@ public static class Snippet
     public static void listAllGameObjectsChildrenOfGameObjectAndComponents(this GameObject gameObject, bool allInactive = true, bool deepLevels = false)
     {
         int i = 0;
-        DebugLog($"Gameobject parent {i} {gameObject.name}", true, "yellow");
+        DebugLog($"Gameobject parent {i} {gameObject.name}", "yellow");
         foreach (GameObject go in GetGameObjectsChildrenOfGameObject(gameObject, allInactive, deepLevels))
         {
-            DebugLog($"Gameobject {i} {go.name} of parent : {(go.transform.parent ? go.transform.parent.gameObject.name : "")}", true, go.activeInHierarchy ? "cyan" : "red");
+            DebugLog($"Gameobject {i} {go.name} of parent : {(go.transform.parent ? go.transform.parent.gameObject.name : "")}", go.activeInHierarchy ? "cyan" : "red");
             int j = 0;
             foreach (Component component in GetComponentsOfGameObject(go, allInactive))
             {
-                DebugLog($"Gameobject {i} {go.name} : Component {j} of {component.name}; Type : {component.GetType()}", true, component.gameObject.activeInHierarchy ? "lime" : "#af0000ff");
+                DebugLog($"Gameobject {i} {go.name} : Component {j} of {component.name}; Type : {component.GetType()}", component.gameObject.activeInHierarchy ? "lime" : "#af0000ff");
                 j++;
             }
             i++;
@@ -1298,21 +1298,21 @@ public static class Snippet
     public static void listAllGameObjectsChildrenOfGameObject(this GameObject gameObject, bool allInactive = true, bool deepLevels = false)
     {
         int i = 0;
-        DebugLog($"Gameobject parent {i} {gameObject.name}", true, "yellow");
+        DebugLog($"Gameobject parent {i} {gameObject.name}", "yellow");
         foreach (GameObject go in GetGameObjectsChildrenOfGameObject(gameObject, allInactive, deepLevels))
         {
-            DebugLog($"Gameobject {i} {go.name} of parent : {(go.transform.parent ? go.transform.parent.gameObject.name : "")}", true, go.activeInHierarchy ? "cyan" : "red");
+            DebugLog($"Gameobject {i} {go.name} of parent : {(go.transform.parent ? go.transform.parent.gameObject.name : "")}", go.activeInHierarchy ? "cyan" : "red");
             i++;
         }
     }
     public static void listAllGameObjectsParentOfGameObject(this GameObject gameObject, bool allInactive = true, bool deepLevels = false)
     {
         int i = 0;
-        DebugLog($"Gameobject child {i} {gameObject.name}", true, "yellow");
+        DebugLog($"Gameobject child {i} {gameObject.name}", "yellow");
         List<GameObject> list = GetGameObjectsParentOfGameObject(gameObject, allInactive, deepLevels).ToList();
         for (int j = 0; j < list.Count - 1; j++)
         {
-            DebugLog($"Gameobject {i} {list[j + 1].name} parent of : {list[j].name}", true, list[j + 1].activeInHierarchy ? "cyan" : "red");
+            DebugLog($"Gameobject {i} {list[j + 1].name} parent of : {list[j].name}", list[j + 1].activeInHierarchy ? "cyan" : "red");
             i++;
         }
     }
@@ -1320,14 +1320,14 @@ public static class Snippet
     public static void listAllGameObjectsParentsOfGameObjectAndComponents(this GameObject gameObject, bool allInactive = true, bool deepLevels = false)
     {
         int i = 0;
-        DebugLog($"Gameobject child {i} {gameObject.name}", true, "yellow");
+        DebugLog($"Gameobject child {i} {gameObject.name}", "yellow");
         foreach (GameObject go in GetGameObjectsParentOfGameObject(gameObject, allInactive, deepLevels))
         {
-            DebugLog($"Gameobject {i} {go.name} of parent : {(go.transform.parent ? go.transform.parent.gameObject.name : "")}", true, go.activeInHierarchy ? "cyan" : "red");
+            DebugLog($"Gameobject {i} {go.name} of parent : {(go.transform.parent ? go.transform.parent.gameObject.name : "")}", go.activeInHierarchy ? "cyan" : "red");
             int j = 0;
             foreach (Component component in GetComponentsOfGameObject(go, allInactive))
             {
-                DebugLog($"Gameobject {i} {go.name} : Component {j} of {component.name}; Type : {component.GetType()}", true, component.gameObject.activeInHierarchy ? "lime" : "#af0000ff");
+                DebugLog($"Gameobject {i} {go.name} : Component {j} of {component.name}; Type : {component.GetType()}", component.gameObject.activeInHierarchy ? "lime" : "#af0000ff");
                 j++;
             }
             i++;
@@ -1344,7 +1344,7 @@ public static class Snippet
         int i = 0;
         foreach (Component component in GetComponentsOfGameObject(gameObject, allInactive))
         {
-            DebugLog($"Component {i} of {component.name}; Type : {component.GetType()}", true, component.gameObject.activeInHierarchy ? "lime" : "#af0000ff");
+            DebugLog($"Component {i} of {component.name}; Type : {component.GetType()}", component.gameObject.activeInHierarchy ? "lime" : "#af0000ff");
             i++;
         }
     }
@@ -2383,9 +2383,9 @@ public static class Snippet
         }
         return holder;
     }
-    public static void DebugLog(string text, bool useColor = false, string color = "white", bool isWarning = false, bool isError = false)
+    public static void DebugLog(string text, string color = "white", bool isWarning = false, bool isError = false)
     {
-        if (useColor)
+        if (color != "white")
         {
             string message = $"<color={color}>{text}</color> <color=orange>{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ffff")}</color>";
             if (isError) { Debug.LogError(message); }

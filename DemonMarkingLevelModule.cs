@@ -54,7 +54,7 @@ namespace DemonMarking
             {
                 if (!creature.data.id.Contains("PlayerDefault"))
                 {
-                    Debug.Log($"DemonMarking : Not a PlayerDefault creature, cannot use this mod");
+                    Snippet.DebugLog($"DemonMarking : Not a PlayerDefault creature, cannot use this mod", "red", true);
                     return;
                 }
                 string gender = creature.data.id.Substring("PlayerDefault".Length);
@@ -69,7 +69,7 @@ namespace DemonMarking
                     }
                     else
                     {
-                        Debug.Log($"DemonMarking : decalID is null; No decal can be spawned");
+                        Snippet.DebugLog($"DemonMarking : decalID is null; No decal can be spawned", "red", true);
                     }
                 }
                 Player.local.StartCoroutine(ColorGlow());
@@ -110,37 +110,57 @@ namespace DemonMarking
                     decalsGO.Add(decal);
                     decalsMat.Add(decal.GetComponent<MeshRenderer>().material);
                 }, decalIDSplit.Last());
-                Debug.Log($"DemonMarking : Decal spawned : {decalIDSplit.Last()}");
+
+                Snippet.DebugLog($"DemonMarking : Decal spawned : {decalIDSplit.Last()}", "yellow");
             }
             else
             {
-                Debug.Log($"DemonMarking : No Part called : {partName} for {decalID}; No decal can be spawned");
+                Snippet.DebugLog($"DemonMarking : No Part called : {partName} for {decalID}; No decal can be spawned", "red", true);
             }
         }
 
         private IEnumerator AddNewMatToEye(Creature creature)
         {
-            yield return new WaitUntil(() => demonEyeMaterial != null);
-            float timer = 0f;
-            bool found = false;
-            while (!found)
+            yield return new WaitUntil(() => demonEyeMaterial != null && creature.renderers.Count > 0);
+            creature.renderers.ForEach(cr =>
             {
-                creature.renderers.ForEach(cr =>
+                Material mat = cr.renderer.material;
+                //Snippet.DebugLog($"DemonMarking : Mat name : {mat.name}", true, "cyan");
+                //if (mat != null)
+                //{
+                //    
+                //    if (mat.name.Contains("Human_InnerEye"))
+                //    {
+                //        mat = demonEyeMaterial;
+                //        eyesMat.Add(mat);
+                //        cr.renderer.material = mat;
+                //        Snippet.DebugLog($"DemonMarking : Added eyes : {demonEyeMaterial} for {mat.name};", true, "yellow");
+                //    }
+                //}
+                Material[] mats = cr.renderer.materials;
+                bool found = false;
+                if (mats.Length > 0)
                 {
-                    Material[] mat = cr.renderer.materials;
-                    for (int k = mat.Length - 1; k >= 0; k--)
+                    for (int k = mats.Length - 1; k >= 0; k--)
                     {
-                        if (cr.renderer.material.name.Contains("Human_InnerEye"))
+                        //Snippet.DebugLog($"DemonMarking : Mats[{k}] name : {mats[k].name}", true, "cyan");
+                        if (mats[k].name.Contains("Human_InnerEye"))
                         {
-                            mat[k] = demonEyeMaterial;
-                            eyesMat.Add(mat[k]);
+                            Snippet.DebugLog($"DemonMarking : Added eyes : {demonEyeMaterial} for {mats[k].name};", "yellow");
+                            mats[k] = demonEyeMaterial;
+                            eyesMat.Add(mats[k]);
+                            found = true;
                         }
                     }
-                    cr.renderer.materials = mat;
-                });
-                timer += Time.fixedDeltaTime;
-                yield return null;
-            }
+                    if (found)
+                        cr.renderer.materials = mats;
+                }
+                else
+                {
+                    Snippet.DebugLog($"DemonMarking : No material containing : Human_InnerEye; Eyes cannot be replaced", "red", true);
+                }
+            });
+            yield return null;
         }
 
         IEnumerator ColorGlow()
@@ -153,7 +173,7 @@ namespace DemonMarking
                     material.SetColor("_Color", Snippet.HDRColor(Color.white, Mathf.PingPong(Time.time * 0.5f * speedOfGlow + i, 1.75f)));
                     i++;
                 }
-                int j = 0;
+                int j = 1;
                 foreach (Material material in eyesMat)
                 {
                     material.SetColor("_EmissionColor", Snippet.HDRColor(Color.white, Mathf.PingPong(Time.time * 0.5f * speedOfGlow * 2 + j, 6f - 4f) + 4f));
